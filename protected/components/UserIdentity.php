@@ -22,7 +22,7 @@ class UserIdentity extends CUserIdentity
 	public function authenticate()
 	{
         $users = User::model()->findByAttributes(array('email'=>$this->username));
-
+       
         if($users == null) {
             $this->errorCode=self::ERROR_USERNAME_INVALID;
         } elseif( $users->password !== md5($this->password)) {
@@ -44,6 +44,7 @@ class UserIdentity extends CUserIdentity
             //$this->setState('jobFunction', $users->getJobFunction());
             //get role user login
             $this->setState('roles', $users->getUserRole($users->id));
+            $this->setState('departement_id', $employee->department_id);
             // $this->setState('loginAs', $users->getRoleOfUser()); 
             // date_default_timezone_set($users->user_timezone);
             $this->setState('dateFormat', Yii::app()->params['dateFormat']);

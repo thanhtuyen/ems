@@ -17,8 +17,8 @@
  * @property integer $updated_date
  * @property integer $time
  * @property integer $request_day
- * @property integer $comment
- *
+ * @property integer $comment_one
+ * @property integer $comment_two
  * The followings are the available model relations:
  * @property Employee $user
  * @property Employee $approve
@@ -73,7 +73,7 @@ class Vacation extends CActiveRecord
 			array('user_id, approve_id', 'length', 'max'=>11),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, start_date, end_date, total, type, reason, user_id, approve_id, created_date, status, updated_date, time, request_day, comment', 'safe', 'on'=>'search'),
+			array('id, start_date, end_date, total, type, reason, user_id, approve_id, created_date, status, updated_date, time, request_day, comment_one, comment_two', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -109,7 +109,8 @@ class Vacation extends CActiveRecord
 			'updated_date' => 'Updated Date',
 			'request_day'  => 'Request Date',
 			'time'			=> 'Time',
-			'comment'		=> 'Comment',
+			'comment_one'		=> 'Comment',
+			'comment_two'		=> 'Comment',
 		);
 	}
 
@@ -150,8 +151,8 @@ class Vacation extends CActiveRecord
 
 		if($this->isNewRecord) {	
 			$sum = $this->total;
-			$startday =Vacation::setStartDate($this->start_date);
-			//CDateTimeParser::parse($this->start_date, 'MM-dd-yyyy');
+			//$startday =Vacation::setStartDate($this->start_date);
+			$startday = CDateTimeParser::parse($this->start_date, 'MM-dd-yyyy');
 			$morning = 27000;
 			$afternoon = 45000;
 						
@@ -208,8 +209,6 @@ class Vacation extends CActiveRecord
 			// set the create date, last updated date and the user doing the creating
 			$this->start_date=$startday;
 			$this->end_date=$endday;
-			 // echo $startday.'star';
-			 // echo $endday.'end55';die;
 			$this->request_day=$requestday;	
 		} elseif($this->getScenario()=='edit') {
 						$sum = $this->total; 
@@ -346,10 +345,10 @@ class Vacation extends CActiveRecord
 	/*
 	 * 
 	 */
-	public function getMoreReason()
+	public function getReason()
 	{
-		$more_reason = $this->more_reason;
-		return $more_reason;
+		$reason = $this->reason;
+		return $reason;
 	}
 	/**
 	 * Get reason array
@@ -772,6 +771,14 @@ class Vacation extends CActiveRecord
 	   		return $users->user_full_name;
 		}
 	}
+	/*
+	 * Get start day follow fomat M-d-y
+	 */
 	
+	public function getStartDay()
+	{
+		return date('M-d-Y',$this->start_date);
+	}
+
 	
 }

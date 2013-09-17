@@ -26,7 +26,6 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-zzzzzzzzzzzzz
 <?php echo CHtml::link(CHtml::image( Yii::app()->request->baseUrl .'/images/search-blue.png', 'DORE'),'#',array('class'=>'search-button')); ?>Search
 
 <div class="search-form" style="display:none">

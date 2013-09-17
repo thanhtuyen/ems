@@ -37,7 +37,7 @@ class VacationController extends Controller
 	        $arr =array('index','create', 'update', 'view', 'admin', 'total');   /* give all access to leader*/
 	    } else {
 
-	        $arr = array('view', 'changePassword', 'forgotPassword');    /*  no access to other user */
+	        $arr = array('view', 'create', 'update');    /*  no access to other user */
 	    }
 
         return array(array('allow',
@@ -81,17 +81,13 @@ class VacationController extends Controller
 	public function actionView($id)
 	{	
 		$model = $this->loadModel($id);
-		$startDate = get_date($model->start_date, null);
-		// echo $model->start_date;
-		// echo $startDate;die;
-		$model->setAttribute('start_date', $startDate);
-		$endDate = get_date($model->end_date, null);
-		$model->setAttribute('end_date', $endDate);
+		$employeeLogin = $this->loadModelEmployee(Yii::app()->user->id);
+		$employeeVacation = $this->loadModelEmployee($model->user_id);
 		$type = $model->getReasonSearchArr();
 		$model->setAttribute('type', $type[$model->type]);
 		$modelUser = $this->loadModelUser($model->user_id);
 		$this->render('view',array(
-			'model'=>$model,'modelUser' => $modelUser
+			'model'=>$model,'modelUser' => $modelUser, 'employeeLogin' => $employeeLogin, 'employeeVacation' => $employeeVacation
 		));
 	}
 
@@ -103,41 +99,28 @@ class VacationController extends Controller
 	{
 		$model=new Vacation;
 		$user = User::model()->findByPk(Yii::app()->user->id);
-		// Uncomment the following line if AJAX validation is needed
-		 $this->performAjaxValidation($model);
-		//print_r($_POST['Vacation']);die;
-
 		if(isset($_POST['Vacation']))
 		{
-
-			$model->attributes = Clean($_POST['Vacation']);
+			$model->attributes=$_POST['Vacation'];
 			$model->setTimeVacation($_POST['Vacation']['time']);
-			$model->created_date = gettime();
+			//print_r($_POST['Vacation']);exit;
 			$model->setStatus(1);
 			$model->user_id = Yii::app()->user->id;
-			// validate 
-    		$model->validate();
-    		echo "<pre>";
-			print_r($model->start_date);
-			if($model->save()) {
-				echo "<pre>";
-			print_r($model->start_date);die;
+			if($model->save())
+			{
 				$logs = new ActivityLog;
-		        if(isset($logs)) {
-			        
-			            $logs->activity_date = time();
-			            $logs->user_id = Yii::app()->user->id;
-						$logs->action_id = Yii::app()->user->id;	// 	User ID
-						$logs->action_group = 'user';				// 	User Group
-						$logs->activity_type = 13;					//	Create 
-						$logs->ip_logged = Yii::app()->request->userHostAddress;
-			            $logs->save();
-			           
-		        }
-			
-		        $this->redirect(array('view','id'=>$model->id));
-			}
+				if(isset($logs))
+				{
+					$logs->activity_date = time();
+					$logs->user_id = Yii::app()->user->id;
+					$logs->action_id = Yii::app()->user->id;	// 	Vacation ID
+					$logs->action_group = 'vacation';			// 	Vacation Group
+					$logs->activity_type = 13;					// 	Create Vacation
+					$logs->save();
+				} 
 				
+				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 		$model->time = 'am';
 		$this->render('create',array(
@@ -262,6 +245,21 @@ class VacationController extends Controller
 	public function loadModelUser($id)
 	{
 		$model=User::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
+	}
+
+	/**
+	 * Returns the data model based on the primary key given in the GET variable.
+	 * If the data model is not found, an HTTP exception will be raised.
+	 * @param integer $id the ID of the model to be loaded
+	 * @return User the loaded model
+	 * @throws CHttpException
+	 */
+	public function loadModelEmployee($id)
+	{
+		$model=Employee::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;

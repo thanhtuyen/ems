@@ -25,7 +25,7 @@
 			}
 		?>
 		<div class="control-group">
-		Request_date:<span style="margin-left:20px;"><?php echo date('Y-m-d');?></span>
+		Request_date:<span style="margin-left:20px;"><?php echo date('m-d-Y');?></span>
 		</div>
 		<div class="control-group">
 	    	<?php if($model->isNewRecord):?>

@@ -105,3 +105,14 @@ margin-bottom: 0px !important;
   text-align: center !important;
   vertical-align: middle;
 }
+.button_approve {
+  padding-top: 30px;
+  text-align: center;
+}
+.btn-small {
+  margin-right: 10px;
+}
+.table {
+  margin-bottom: 0px !important;
+  width:100%;
+}
