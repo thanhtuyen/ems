@@ -1,0 +1,107 @@
+
+.view_user {
+  margin-left: 50px !important;
+  margin-right: 20px !important;
+  border:1px solid #999999;
+  border-radius:15px;
+  width: 70%;
+}
+.view_user table th {
+  color: #999999 !important;
+  font-weight: bold;
+  background-color: #ffffff !important;
+  border-top-style: none !important;
+  padding-right: 20px !important;
+
+}
+.view_user table td {
+  background-color: #ffffff !important;
+  border-top-style: none !important;
+}
+.form-actions {
+  background-color: #ffffff !important;
+  border-top-style: none !important;
+  padding-top: 0px;
+
+}
+.form-horizontal .form-actions {
+padding-left: 100px;
+}
+
+.search_name {
+  padding-top: 50px;
+}
+.search_name .rowChild{
+  float: left;
+}
+.search_name .rowChild label{
+  margin-right: 10px;
+  width: 100px;
+}
+.create_user {
+  width: 70%;
+  margin-left: 50px !important;
+  margin-right: 20px !important;
+  border:1px solid #999999;
+  border-radius:15px;
+}
+.form-horizontal .controls {
+    margin-left: 50px !important;
+    margin-bottom: 10px;
+}
+.form-horizontal .control-label {
+  width: 80px;
+  margin-right: 30px;
+ 
+}
+.space6 {
+  margin-left: 50px;
+}
+.form-horizontal .control-group {
+margin-bottom: 0px !important;
+ width: 900px;
+}
+.update_employee{
+  margin-left: 20px !important;
+  margin-right: 0px !important;
+  /*border:1px solid #999999;
+  border-radius:15px;*/
+}
+.span9 {
+  width: 100%;
+}
+.search-form  {
+  margin-left: 50px !important;
+  margin-right: 20px !important;
+  border:1px solid #999999;
+  border-radius:15px;
+  width: 50%;
+  background: white !important;
+}
+.space5 {
+  margin-left: 50px;
+  margin-top: 10px;
+}
+
+.you {
+  background: white;
+  background: -webkit-gradient(linear, left top, left bottom, from(#C7EBF6), to(white));
+  background: -moz-linear-gradient(top, #C7EBF6, white);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c7ebf6', endColorstr='#ffffff');
+  border: 1px solid #39C;
+  -moz-border-radius: 6px;
+  -o-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  color: #39C;
+  display: inline-block;
+  font-size: 11px !important;
+  font-style: normal !important;
+  font-weight: bold !important;
+  line-height: 12px !important;
+  margin-top: -20px;
+  min-width: 20px;
+  padding: 0 4px 1px 4px !important;
+  text-align: center !important;
+  vertical-align: middle;
+}

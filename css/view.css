@@ -1,0 +1,41 @@
+.viewTable{
+  width : 600px;
+  margin-left: 100px !important;
+}
+
+.container ul li.active a {
+    color: #40c9f5 !important;
+}
+.table-striped tbody > tr:nth-child(odd) > td, .table-striped tbody > tr:nth-child(odd) > th {
+  background-color:#ffffff !important;
+}
+
+.viewTable, table th {
+  border-top-color:#DDDDDD;
+  border-top-style:solid;
+  color: #999999 ;
+  border-top-width:0px !important;
+  line-height:20px;
+  text-align:left;
+  vertical-align:top;
+}
+
+.viewTable, table td{
+  border-top-color:#DDDDDD;
+  border-top-style:solid;
+  color: #0064cd ;
+  border-top-width:0px !important;
+  line-height:20px;
+  padding-left:30px !important;
+  text-align:left;
+  vertical-align:top;
+}
+.viewTable .form-actions {
+  background-color: #ffffff !important;
+  border-top-color: #ffffff !important;
+  border-top-style:solid;
+  border-top-width:1px;
+  margin-bottom:20px;
+  margin-top:10px;
+  padding:19px 20px 20px;
+}

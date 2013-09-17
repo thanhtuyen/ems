@@ -1,0 +1,59 @@
+
+.view_user {
+  margin-left: 100px !important;
+  margin-right: 300px !important;
+  border:1px solid #999999;
+  border-radius:15px;
+}
+.view_user table th {
+  color: #999999 !important;
+  font-weight: bold;
+  background-color: #ffffff !important;
+  border-top-style: none !important;
+  padding-right: 20px !important;
+
+}
+.view_user table td {
+  background-color: #ffffff !important;
+  border-top-style: none !important;
+}
+.form-actions {
+  background-color: #ffffff !important;
+  border-top-style: none !important;
+
+}
+.search_name {
+  padding-top: 50px;
+}
+.search_name .rowChild{
+  float: left;
+}
+.search_name .rowChild label{
+  margin-right: 10px;
+  width: 100px;
+}
+.create_user {
+  margin-left: 100px !important;
+  margin-right: 100px !important;
+  border:1px solid #999999;
+  border-radius:15px;
+}
+.search_name {
+  padding-top: 50px;
+}
+.search_name .rowChild{
+  float: left;
+}
+.search_name .rowChild label{
+  margin-right: 10px;
+  width: 100px;
+}
+.create_user {
+  margin-left: 100px !important;
+  margin-right: 100px !important;
+  border:1px solid #999999;
+  border-radius:15px;
+}
+.contract_start_date {
+  margin-bottom: 20px;
+}

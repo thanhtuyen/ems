@@ -1,0 +1,64 @@
+.update_employee {
+  margin-left: 50px !important;
+  margin-right: 20px !important;
+  border:1px solid #999999;
+  border-radius:15px;
+  width: 80%;
+}
+.control-group ul {
+  margin-left: 70px;
+  margin-right: 100px;
+}
+ .container .control-group ul li a {
+  color: #000000 !important;
+}
+.employee {
+  margin: 50 50 50 50;
+}
+.view_employee {
+  margin-left: 50px !important;
+  margin-right: 20px !important;
+  border:1px solid #999999;
+  border-radius:15px;
+  width: 70%;
+}
+.view_employee table th {
+  color: #999999 !important;
+  font-weight: bold;
+  background-color: #ffffff !important;
+  border-top-style: none !important;
+  padding-right: 20px !important;
+
+}
+.view_employee table td {
+  background-color: #ffffff !important;
+  border-top-style: none !important;
+}
+.control-group p {
+  margin-left: 70px;
+  margin-right: 100px;
+}
+ .avatar{
+  background: #f4f4f4;
+  /*background-color: yellow;*/
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  line-height: 199px;
+  text-align: center;
+  overflow: hidden;
+}
+
+#yw5 {
+  width: 650px !important;
+}
+.tab-content {
+  width:900px;
+}
+.control-group .controls {
+  margin-bottom:10px;
+  margin-left:100px !important;
+  width:650px;
+}
