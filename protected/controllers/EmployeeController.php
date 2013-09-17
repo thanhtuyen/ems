@@ -29,13 +29,13 @@ class EmployeeController extends Controller
 	{
 		if( Yii::app()->user->getState('roles') =="admin") {
 	    
-	         $arr =array('index','create', 'update', 'view', 'admin');   /* give all access to admin */
+	         $arr =array('index', 'update', 'view', 'admin');   /* give all access to admin */
 	    } elseif( Yii::app()->user->getState('roles') =="manager") {
 	      	
-	      	 $arr =array('index','create', 'update', 'view', 'admin');   /* give all access to manager*/
+	      	 $arr =array('index', 'update', 'view', 'admin');   /* give all access to manager*/
 	    } elseif( Yii::app()->user->getState('roles') =="leader") {
 	      	
-	        $arr =array('index','create', 'update', 'view', 'admin');   /* give all access to leader*/
+	        $arr =array('index', 'update', 'view', 'admin');   /* give all access to leader*/
 	    } else {
 
 	        $arr = array('view');    /*  no access to other user */
@@ -54,7 +54,7 @@ class EmployeeController extends Controller
   	*/
     public function init(){
     	Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/user.css');
-         Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/employee.css');
+        Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/employee.css');
         parent::init();
     }
 

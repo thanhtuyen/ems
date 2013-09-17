@@ -28,16 +28,16 @@ class VacationController extends Controller
 	{
 		if( Yii::app()->user->getState('roles') =="admin") {
 	    
-	         $arr =array('index','create', 'update', 'view', 'admin', 'total');   /* give all access to admin */
+	         $arr =array('index','create', 'update', 'view', 'admin', 'total', 'withdraw');   /* give all access to admin */
 	    } elseif( Yii::app()->user->getState('roles') =="manager") {
 	      	
-	      	 $arr =array('index','create', 'update', 'view', 'admin', 'total');   /* give all access to manager*/
+	      	 $arr =array('index','create', 'update', 'view', 'admin', 'total', 'withdraw');   /* give all access to manager*/
 	    } elseif( Yii::app()->user->getState('roles') =="leader") {
 	      	
-	        $arr =array('index','create', 'update', 'view', 'admin', 'total');   /* give all access to leader*/
+	        $arr =array('index','create', 'update', 'view', 'admin', 'total', 'withdraw');   /* give all access to leader*/
 	    } else {
 
-	        $arr = array('view', 'create', 'update');    /*  no access to other user */
+	        $arr = array('view', 'create', 'update', 'withdraw');    /*  no access to other user */
 	    }
 
         return array(array('allow',
@@ -142,9 +142,25 @@ class VacationController extends Controller
 
 		if(isset($_POST['Vacation']))
 		{
+			$model->setScenario('edit');
+			//print_r($_POST['Vacation']['start_day']);exit;
 			$model->attributes=$_POST['Vacation'];
+			$model->setTimeVacation($_POST['Vacation']['time']);		
 			if($model->save())
+			{
+				$logs = new ActivityLog;
+				if(isset($logs))
+				{
+					$logs->activity_date = time();
+					$logs->user_id = Yii::app()->user->id;
+					$logs->action_id = $id;						// 	Vacation ID
+					$logs->action_group = 'vacation';			// 	Vacation Group
+					$logs->activity_type = 14;					// 	Update Vacation
+					$logs->save();
+				}
+				
 				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
 		$this->render('update',array(
@@ -263,5 +279,13 @@ class VacationController extends Controller
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
+	}
+
+	public function actionWithdraw($id) 
+	{
+		$model=Vacation::model()->findByPk($id);
+		$this->render('withdraw',array(
+			'model'=>$model,
+		));
 	}
 }

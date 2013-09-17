@@ -161,6 +161,4 @@ $this->breadcrumbs=array(
 		
 	?>
 	</h3>
-
-		
 	</div>

@@ -8,14 +8,15 @@ $this->breadcrumbs=array(
 	'Update',
 );
 
-$this->menu=array(
-	array('label'=>'List Vacation', 'url'=>array('index')),
-	array('label'=>'Create Vacation', 'url'=>array('create')),
-	array('label'=>'View Vacation', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Vacation', 'url'=>array('admin')),
-);
+// $this->menu=array(
+// 	array('label'=>'List Vacation', 'url'=>array('index')),
+// 	array('label'=>'Create Vacation', 'url'=>array('create')),
+// 	array('label'=>'View Vacation', 'url'=>array('view', 'id'=>$model->id)),
+// 	array('label'=>'Manage Vacation', 'url'=>array('admin')),
+// );
 ?>
+<div class="update_employee">
+	<h1>Update Vacation <?php echo $model->id; ?></h1>
 
-<h1>Update Vacation <?php echo $model->id; ?></h1>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+	<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+</div>

@@ -28,11 +28,6 @@ $('.search-form form').submit(function(){
 
 <h1>Manage Vacations</h1>
 
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-</p>
-
 <?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
@@ -43,14 +38,23 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'vacation-grid',
 	'dataProvider'=>$model->search(),
-	'filter'=>$model,
+	//'filter'=>$model,
 	'columns'=>array(
-		'id',
-		'start_date',
-		'end_date',
+		array('name' => 'fullname',
+			'value' => '$data->user->fullname',
+			'htmlOptions'=>array('width'=>150,'align'=>'center'),),
+		array('name' => 'request_day',
+			'value' => '$data->getrequestDay()'),
+		array('name' => 'start_date',
+			'value' => '$data->getstartDate()'),
+		array('name' => 'end_date',
+			'value' => '$data->getEnddate()'),
 		'total',
 		'type',
-		'reason',
+		array('name' => 'status',
+			'value' => '$data::getStatusName($data->status)'),
+		
+		//'reason',
 		/*
 		'user_id',
 		'approve_id',
@@ -59,7 +63,20 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'updated_date',
 		*/
 		array(
-			'class'=>'CButtonColumn',
-		),
+					'class'=>'CButtonColumn',
+					'template'=>'{update} {view}',
+					'header'=>'Actions',
+					'buttons'=>array(
+									'update' => array(    									   
+										'imageUrl'=>Yii::app()->request->baseUrl.'/images/ico_edit.png',
+			                            'url'=>'Yii::app()->createUrl("vacation/update",array("id"=>$data->id))',
+									), 
+			                        'view' => array(
+			                            'imageUrl'=>Yii::app()->request->baseUrl.'/images/view.png',
+			                            'url'=>'Yii::app()->createUrl("vacation/view",array("id"=>$data->id))',
+			                        ),
+	                ),
+					'htmlOptions'=>array('width'=>100,'align'=>'center'),
+	         ),
 	),
 )); ?>

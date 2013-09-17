@@ -85,7 +85,8 @@ class Vacation extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'user' => array(self::BELONGS_TO, 'Employee', 'user_id'),
+			'employee' => array(self::BELONGS_TO, 'Employee', 'user_id'),
+			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 			'approve' => array(self::BELONGS_TO, 'Employee', 'approve_id'),
 		);
 	}
@@ -212,7 +213,7 @@ class Vacation extends CActiveRecord
 			$this->request_day=$requestday;	
 		} elseif($this->getScenario()=='edit') {
 						$sum = $this->total; 
-			$startday = CDateTimeParser::parse($this->start_day, 'MM-dd-yyyy');
+			$startday = CDateTimeParser::parse($this->start_date, 'MM-dd-yyyy');
 			$morning = 27000;
 			$afternoon = 45000;
 						
@@ -312,7 +313,7 @@ class Vacation extends CActiveRecord
 	 * Get End day follow fomat M-d-y
 	 * @return unknown_type
 	 */
-	public function getEndDay()
+	public function getEndDate()
 	{
 		return date('M-d-Y',$this->end_date);
 	}
