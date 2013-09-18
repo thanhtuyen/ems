@@ -47,6 +47,7 @@ $this->breadcrumbs=array(
 
 	<div class = "view_user">
 		<h3><?php echo $modelUser->fullname; ?></h3>
+		
 		<h4>This vacation is <span style="color:red;"><?php echo $model::getStatusName($model->status);?></span></h4>
 		<?php $this->widget('bootstrap.widgets.TbDetailView', array(
 			'data'=>$model,

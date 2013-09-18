@@ -27,6 +27,41 @@ $('.search-form form').submit(function(){
 ?>
 
 <h1>Manage Vacations</h1>
+ 
+
+
+
+<?php 
+	$modelWaiting=new CActiveDataProvider('Vacation', array(
+	            'criteria'=>array(
+	                'condition'=>'status=1',
+	                'order'=>'id DESC',
+	            ),
+	        ));
+
+	$modelCancel=new CActiveDataProvider('Vacation', array(
+	            'criteria'=>array(
+	                'condition'=>'status=2',
+	                'order'=>'id DESC',
+	            ),
+	        ));
+
+	$modelAccepted=new CActiveDataProvider('Vacation', array(
+	            'criteria'=>array(
+	                'condition'=>'status=3',
+	                'order'=>'id DESC',
+	            ),
+	        ));
+	$modelDecline=new CActiveDataProvider('Vacation', array(
+	            'criteria'=>array(
+	                'condition'=>'status=5',
+	                'order'=>'id DESC',
+	            ),
+	        ));
+
+	$newVacation =new Vacation;
+?>
+
 
 <?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
@@ -35,48 +70,21 @@ $('.search-form form').submit(function(){
 )); ?>
 </div><!-- search-form -->
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'vacation-grid',
-	'dataProvider'=>$model->search(),
-	//'filter'=>$model,
-	'columns'=>array(
-		array('name' => 'fullname',
-			'value' => '$data->user->fullname',
-			'htmlOptions'=>array('width'=>150,'align'=>'center'),),
-		array('name' => 'request_day',
-			'value' => '$data->getrequestDay()'),
-		array('name' => 'start_date',
-			'value' => '$data->getstartDate()'),
-		array('name' => 'end_date',
-			'value' => '$data->getEnddate()'),
-		'total',
-		'type',
-		array('name' => 'status',
-			'value' => '$data::getStatusName($data->status)'),
-		
-		//'reason',
-		/*
-		'user_id',
-		'approve_id',
-		'created_date',
-		'status',
-		'updated_date',
-		*/
-		array(
-					'class'=>'CButtonColumn',
-					'template'=>'{update} {view}',
-					'header'=>'Actions',
-					'buttons'=>array(
-									'update' => array(    									   
-										'imageUrl'=>Yii::app()->request->baseUrl.'/images/ico_edit.png',
-			                            'url'=>'Yii::app()->createUrl("vacation/update",array("id"=>$data->id))',
-									), 
-			                        'view' => array(
-			                            'imageUrl'=>Yii::app()->request->baseUrl.'/images/view.png',
-			                            'url'=>'Yii::app()->createUrl("vacation/view",array("id"=>$data->id))',
-			                        ),
-	                ),
-					'htmlOptions'=>array('width'=>100,'align'=>'center'),
-	         ),
-	),
-)); ?>
+<?php $this->widget('bootstrap.widgets.TbTabs', array(
+    'id' => 'mytabs',
+    'type' => 'tabs',
+    'tabs' => array(
+      array('id' => 'tab1', 'label' => 'All Vacation', 'content' => $this->renderPartial('allVacation', array('model' => $model), true), 'active' => true),
+      array('id' => 'tab2', 'label' => 'Awaiting', 'content' =>$this->renderPartial('Awaiting', array('modelWaiting' => $modelWaiting), true)),
+      array('id' =>  'tab3', 'label' => 'Request Cancel', 'content' =>$this->renderPartial('RequestCancel', array('modelCancel' => $modelCancel), true)),
+      array('id' => 'tab4', 'label' => 'Accepted', 'content' => $this->renderPartial('Accepted', array('modelAccepted' => $modelAccepted), true)),
+      array('id' => 'tab5', 'label' => 'Decline', 'content' => $this->renderPartial('Decline', array('modelDecline' => $modelDecline), true)),
+      //array('id' => 'tab6', 'label' => 'New Vacation', 'content' => $this->renderPartial('create', array('model' => $newVacation), true)),
+    ),
+    'events'=>array('shown'=>'js:loadContent')
+  )
+);?>
+
+
+
+
