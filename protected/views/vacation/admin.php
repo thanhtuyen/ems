@@ -75,10 +75,10 @@ $('.search-form form').submit(function(){
     'type' => 'tabs',
     'tabs' => array(
       array('id' => 'tab1', 'label' => 'All Vacation', 'content' => $this->renderPartial('allVacation', array('model' => $model), true), 'active' => true),
-      array('id' => 'tab2', 'label' => 'Awaiting', 'content' =>$this->renderPartial('Awaiting', array('modelWaiting' => $modelWaiting), true)),
-      array('id' =>  'tab3', 'label' => 'Request Cancel', 'content' =>$this->renderPartial('RequestCancel', array('modelCancel' => $modelCancel), true)),
-      array('id' => 'tab4', 'label' => 'Accepted', 'content' => $this->renderPartial('Accepted', array('modelAccepted' => $modelAccepted), true)),
-      array('id' => 'tab5', 'label' => 'Decline', 'content' => $this->renderPartial('Decline', array('modelDecline' => $modelDecline), true)),
+      array('id' => 'tab2', 'label' => 'Awaiting', 'content' =>$this->renderPartial('listAwaiting', array('modelWaiting' => $modelWaiting), true)),
+      array('id' =>  'tab3', 'label' => 'Request Cancel', 'content' =>$this->renderPartial('listRequestCancel', array('modelCancel' => $modelCancel), true)),
+      array('id' => 'tab4', 'label' => 'Accepted', 'content' => $this->renderPartial('listAccepted', array('modelAccepted' => $modelAccepted), true)),
+      array('id' => 'tab5', 'label' => 'Decline', 'content' => $this->renderPartial('listDecline', array('modelDecline' => $modelDecline), true)),
       //array('id' => 'tab6', 'label' => 'New Vacation', 'content' => $this->renderPartial('create', array('model' => $newVacation), true)),
     ),
     'events'=>array('shown'=>'js:loadContent')

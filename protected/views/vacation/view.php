@@ -47,7 +47,7 @@ $this->breadcrumbs=array(
 
 	<div class = "view_user">
 		<h3><?php echo $modelUser->fullname; ?></h3>
-		
+		<?php echo $model->status;?>
 		<h4>This vacation is <span style="color:red;"><?php echo $model::getStatusName($model->status);?></span></h4>
 		<?php $this->widget('bootstrap.widgets.TbDetailView', array(
 			'data'=>$model,
@@ -110,7 +110,7 @@ $this->breadcrumbs=array(
 															'label' => 'Accept',
 															'type'  => 'success',
 															'size' => 'small',
-															'url'  => array('vacation/accept','id'=>$model->id),
+															'url'  => array('vacation/accepted','id'=>$model->id),
 														));
 				$this->widget('bootstrap.widgets.TbButton',array(
 															'label' => 'Decline',
