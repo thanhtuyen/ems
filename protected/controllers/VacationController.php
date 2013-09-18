@@ -85,9 +85,8 @@ class VacationController extends Controller
 		$employeeVacation = $this->loadModelEmployee($model->user_id);
 		$type = $model->getReasonSearchArr();
 		$model->setAttribute('type', $type[$model->type]);
-		$modelUser = $this->loadModelUser($model->user_id);
 		$this->render('view',array(
-			'model'=>$model,'modelUser' => $modelUser, 'employeeLogin' => $employeeLogin, 'employeeVacation' => $employeeVacation
+			'model'=>$model,'employeeLogin' => $employeeLogin, 'employeeVacation' => $employeeVacation
 		));
 	}
 
@@ -187,10 +186,11 @@ class VacationController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Vacation');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		// $dataProvider=new CActiveDataProvider('Vacation');
+		// $this->render('index',array(
+		// 	'dataProvider'=>$dataProvider,
+		// ));
+		Yii::app()->request->redirect(app()->createUrl('/Vacation/Admin'));
 	}
 
 	/**
@@ -199,12 +199,13 @@ class VacationController extends Controller
 	public function actionAdmin()
 	{
 		$model=new Vacation('search');
+
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Vacation']))
 			$model->attributes=$_GET['Vacation'];
 
 		$this->render('admin',array(
-			'model'=>$model,
+			'model'=>$model, 
 		));
 	}
 
@@ -283,7 +284,46 @@ class VacationController extends Controller
 
 	public function actionWithdraw($id) 
 	{
-		$model=Vacation::model()->findByPk($id);
+		$model=$this->loadmodel($id);
+		 
+				
+		if(($model->user_id)<>(Yii::app()->user->id))
+		{
+			Yii::app()->user->setFlash("updateFail","You have no permit to withdraw another's vacation");
+			$this->redirect(array('admin'));
+		}
+		if(($model->status)<>1)	//	not awaiting
+		{
+			Yii::app()->user->setFlash("updateFail","The vacation is not awaiting. You have no permit to withdraw");
+			$this->redirect(array('admin'));
+		}
+		
+		if(isset($_POST['Vacation']))
+		{
+			$model->comment_two=$_POST['Vacation']['comment_two'];
+			$model->setStatus(4);	//	withdraw
+			if($model->save())
+			{
+				$logs = new ActivityLog;
+				if(isset($logs))
+				{
+					$logs->activity_date = time();
+					$logs->user_id = Yii::app()->user->id;
+					$logs->action_id = $id;						// 	Vacation ID
+					$logs->action_group = 'vacation';			// 	Vacation Group
+					$logs->activity_type = 19;					// 	Withdraw Vacation
+					$logs->save();
+				}				
+				
+				$this->redirect(array('view','id'=>$model->id));
+			}
+			else
+			{ 
+				throw new CHttpException(403,'Error while withdraw vacation');
+			}
+			
+		}
+
 		$this->render('withdraw',array(
 			'model'=>$model,
 		));

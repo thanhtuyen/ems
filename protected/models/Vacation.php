@@ -137,9 +137,10 @@ class Vacation extends CActiveRecord
 		$criteria->compare('created_date',$this->created_date);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('updated_date',$this->updated_date);
-
+		$criteria->order = "status DESC";
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+
 		));
 	}
 
@@ -411,6 +412,7 @@ class Vacation extends CActiveRecord
 			self::STATUS_REQUEST_CANCEL => 'Requested Cancel',
 			self::STATUS_ACCEPT 		=> 'Accepted',
 			self::STATUS_DECLINE 		=> 'Declined',
+			self:: STATUS_CANCEL    	=> 'Cancel',		
 		);
 	}
 	/*

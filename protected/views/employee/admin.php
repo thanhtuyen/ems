@@ -40,10 +40,12 @@ $('.search-form form').submit(function(){
 	//'filter'=>$model,
 	'columns'=>array(
 		'id',
+		array('name' => 'fullname',
+			  'value' => '$data->id0->fullname'),
 		'job_title',
 		'degree',
 		'degree_name',
-		'background',
+		//'background',
 		'telephone',
 		'department_id',
 		/*

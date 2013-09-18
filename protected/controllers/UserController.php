@@ -235,10 +235,11 @@ class UserController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('User');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		// $dataProvider=new CActiveDataProvider('User');
+		// $this->render('index',array(
+		// 	'dataProvider'=>$dataProvider,
+		// ));
+		Yii::app()->request->redirect(app()->createUrl('/User/Admin'));
 	}
 
 	/**

@@ -160,10 +160,11 @@ class EmployeeController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Employee');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		// $dataProvider=new CActiveDataProvider('Employee');
+		// $this->render('index',array(
+		// 	'dataProvider'=>$dataProvider,
+		// ));
+		Yii::app()->request->redirect(app()->createUrl('/Employee/Admin'));
 	}
 
 	/**
