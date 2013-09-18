@@ -35,27 +35,27 @@ $('.search-form form').submit(function(){
 	$modelWaiting=new CActiveDataProvider('Vacation', array(
 	            'criteria'=>array(
 	                'condition'=>'status=1',
-	                'order'=>'id DESC',
+	                'order'=>'id ASC',
 	            ),
 	        ));
 
 	$modelCancel=new CActiveDataProvider('Vacation', array(
 	            'criteria'=>array(
 	                'condition'=>'status=2',
-	                'order'=>'id DESC',
+	                'order'=>'id ASC',
 	            ),
 	        ));
 
 	$modelAccepted=new CActiveDataProvider('Vacation', array(
 	            'criteria'=>array(
 	                'condition'=>'status=3',
-	                'order'=>'id DESC',
+	                'order'=>'id ASC',
 	            ),
 	        ));
 	$modelDecline=new CActiveDataProvider('Vacation', array(
 	            'criteria'=>array(
 	                'condition'=>'status=5',
-	                'order'=>'id DESC',
+	                'order'=>'id ASC',
 	            ),
 	        ));
 
