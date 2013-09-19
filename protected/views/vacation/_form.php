@@ -1,3 +1,9 @@
+
+<?php  
+  $cs = Yii::app()->getClientScript();
+ // $cs->registerScriptFile('/js/yourscript.js', CClientScript::POS_END);
+  $cs->registerCssFile('/css/vacation.css');
+?>
 <?php
 /* @var $this VacationController */
 /* @var $model Vacation */
@@ -115,6 +121,3 @@
 	</div>
 
 <?php  $this->endWidget();?>
-
-
-	

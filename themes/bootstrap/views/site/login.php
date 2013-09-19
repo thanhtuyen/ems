@@ -23,7 +23,7 @@ $this->breadcrumbs=array(
     <?php echo $form->checkboxRow($model, 'rememberMe'); ?>
     <?php $this->widget('bootstrap.widgets.TbButton', array('htmlOptions'=>array('class'=>'btn'), 'buttonType'=>'submit', 'label'=>'Sign In')); ?>
     <div id="forgotpass">
-        <a href="<?php echo app()->homeUrl; ?>">Forgot password?</a>
+        <?php echo CHtml::link('Forgot password?',array('User/forgotPassword')); ?>
     </div>
 </fieldset>
 <?php $this->endWidget(); ?>

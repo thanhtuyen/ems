@@ -65,6 +65,11 @@ class Employee extends CActiveRecord
     const Project_Manager = 'Project Manager';
     const Operation_Manager = 'Operation Manager';
     const Managing_Director = 'Managing Director';
+
+
+    const S_THUMBNAIL = '/media/images/thumbnails/';
+    const S_IMAGES      = '/media/images/';
+    const S_CVS   = '/media/cv/';
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -134,7 +139,7 @@ class Employee extends CActiveRecord
 			'salaries' => array(self::HAS_MANY, 'Salary', 'employee_id'),
 			'vacations' => array(self::HAS_MANY, 'Vacation', 'user_id'),
 			'vacations1' => array(self::HAS_MANY, 'Vacation', 'approve_id'),
-			'departments' => array(self::HAS_ONE, 'Department', 'department_id')
+			'departments' => array(self::HAS_ONE, 'Department', 'id')
 		);
 	}
 
@@ -173,32 +178,82 @@ class Employee extends CActiveRecord
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
-
+		$status = 1;
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('job_title',$this->job_title,true);
-		$criteria->compare('degree',$this->degree,true);
-		$criteria->compare('degree_name',$this->degree_name,true);
-		$criteria->compare('background',$this->background,true);
-		$criteria->compare('telephone',$this->telephone,true);
-		$criteria->compare('mobile',$this->mobile,true);
-		$criteria->compare('homeaddress',$this->homeaddress,true);
-		$criteria->compare('education',$this->education,true);
-		$criteria->compare('skill',$this->skill,true);
-		$criteria->compare('experience',$this->experience,true);
-		$criteria->compare('notes',$this->notes,true);
-		$criteria->compare('avatar',$this->avatar,true);
-		$criteria->compare('cv',$this->cv,true);
-		$criteria->compare('department_id',$this->department_id,true);
-		$criteria->compare('created_date',$this->created_date);
-		$criteria->compare('updated_date',$this->updated_date);
-		$criteria->compare('personal_email',$this->personal_email,true);
+		// $criteria->compare('job_title',$this->job_title,true);
+		// $criteria->compare('degree',$this->degree,true);
+		// $criteria->compare('degree_name',$this->degree_name,true);
+		// $criteria->compare('background',$this->background,true);
+		// $criteria->compare('telephone',$this->telephone,true);
+		// $criteria->compare('mobile',$this->mobile,true);
+		// $criteria->compare('homeaddress',$this->homeaddress,true);
+		// $criteria->compare('education',$this->education,true);
+		// $criteria->compare('skill',$this->skill,true);
+		// $criteria->compare('experience',$this->experience,true);
+		// $criteria->compare('notes',$this->notes,true);
+		// $criteria->compare('avatar',$this->avatar,true);
+		// $criteria->compare('cv',$this->cv,true);
+		// $criteria->compare('department_id',$this->department_id,true);
+		// $criteria->compare('created_date',$this->created_date);
+		// $criteria->compare('updated_date',$this->updated_date);
+		// $criteria->compare('personal_email',$this->personal_email,true);
+		$criteria->with = array('id0',
+		                        );
+		$criteria->together = true; // ADDED THIS
+		$criteria->select = array('id');
+		$criteria->condition = "id0.status=:status ";
+		$criteria->params = array(':status' => $status);
+
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function search1()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+		$status = 2;
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('id',$this->id,true);
+		// $criteria->compare('job_title',$this->job_title,true);
+		// $criteria->compare('degree',$this->degree,true);
+		// $criteria->compare('degree_name',$this->degree_name,true);
+		// $criteria->compare('background',$this->background,true);
+		// $criteria->compare('telephone',$this->telephone,true);
+		// $criteria->compare('mobile',$this->mobile,true);
+		// $criteria->compare('homeaddress',$this->homeaddress,true);
+		// $criteria->compare('education',$this->education,true);
+		// $criteria->compare('skill',$this->skill,true);
+		// $criteria->compare('experience',$this->experience,true);
+		// $criteria->compare('notes',$this->notes,true);
+		// $criteria->compare('avatar',$this->avatar,true);
+		// $criteria->compare('cv',$this->cv,true);
+		// $criteria->compare('department_id',$this->department_id,true);
+		// $criteria->compare('created_date',$this->created_date);
+		// $criteria->compare('updated_date',$this->updated_date);
+		// $criteria->compare('personal_email',$this->personal_email,true);
+		$criteria->with = array('id0',
+		                        );
+		$criteria->together = true; // ADDED THIS
+		$criteria->select = array('id');
+		$criteria->condition = "id0.status=:status ";
+		$criteria->params = array(':status' => $status);
+
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
 
 	public function getDepartmentOption() 
 	{

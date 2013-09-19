@@ -29,13 +29,13 @@ class EmployeeController extends Controller
 	{
 		if( Yii::app()->user->getState('roles') =="admin") {
 	    
-	         $arr =array('index', 'update', 'view', 'admin');   /* give all access to admin */
+	         $arr =array('index', 'update', 'view', 'create', 'admin');   /* give all access to admin */
 	    } elseif( Yii::app()->user->getState('roles') =="manager") {
 	      	
-	      	 $arr =array('index', 'update', 'view', 'admin');   /* give all access to manager*/
+	      	 $arr =array('index', 'update', 'view', 'create', 'admin');   /* give all access to manager*/
 	    } elseif( Yii::app()->user->getState('roles') =="leader") {
 	      	
-	        $arr =array('index', 'update', 'view', 'admin');   /* give all access to leader*/
+	        $arr =array('index', 'update', 'view', 'create', 'admin');   /* give all access to leader*/
 	    } else {
 
 	        $arr = array('view');    /*  no access to other user */
@@ -64,8 +64,10 @@ class EmployeeController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$model = $this->loadModel($id);
+
 		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+			'model'=>$model,
 		));
 	}
 
@@ -75,21 +77,21 @@ class EmployeeController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Employee;
-
+		//$model=new Employee;
+		Yii::app()->request->redirect(app()->createUrl('/Employee/Admin'));
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Employee']))
-		{
-			$model->attributes=$_POST['Employee'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+		// if(isset($_POST['Employee']))
+		// {
+		// 	$model->attributes=$_POST['Employee'];
+		// 	if($model->save())
+		// 		$this->redirect(array('view','id'=>$model->id));
+		// }
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+		// $this->render('create',array(
+		// 	'model'=>$model,
+		// ));
 	}
 
 	/**
@@ -104,14 +106,9 @@ class EmployeeController extends Controller
 			throw new CHttpException(404,'You are not authorized to update This profile info !');
 		}
 		$model=$this->loadModel($id);
-		//print_r($model->cv);
 		$departmentName = $model->department_id;
-		
-		//Yii::import('system.web.CUploadedFile');
-		
-		//echo $departmentName;die;
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		$oldAvatar = $model->avatar;
+		$oldCv = $model->cv;
 		$model->setScenario('update');
 		if(isset($_POST['Employee']))
 		{
@@ -131,6 +128,42 @@ class EmployeeController extends Controller
             }	
 
             if ($model->validate()) {
+            	//check value avatar exits
+            	$avatar = CUploadedFile::getInstance($model, 'avatar');
+	            if (is_object($avatar) && get_class($avatar)==='CUploadedFile')
+	            {
+	              $model->avatar = $avatar;
+	            }
+
+	            if (is_object($model->avatar)) {
+	            	$model->avatar->saveAs(Yii::getPathOfAlias('webroot'). Employee::S_THUMBNAIL.$model->avatar->name);
+	            } else {
+	            	$model->avatar = $oldAvatar;
+	            }
+              	
+	            //check value cv exits
+              	$cv = CUploadedFile::getInstance($model, 'cv');
+	            if (is_object($cv) && get_class($cv)==='CUploadedFile')
+	            {
+	              $model->cv = $cv;
+	            }
+
+	            if (is_object($model->cv)) {
+
+	            	$model->cv->saveAs(Yii::getPathOfAlias('webroot'). Employee::S_CVS.$model->cv->name);
+	            } else {
+	            	$model->cv = $oldCv;
+	            }
+              	
+              
+              	//if avatar null, get old avatar
+              	// if($_POST['Employee']['avatar'] == '') {
+              	// 	$model->avatar = $oldAvatar;
+              	// }
+              	// //if cv null, get old cv
+              	// if($_POST['Employee']['cv'] == '') {
+              	// 	$model->cv = $oldCv;
+              	// }
             	if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
             }	

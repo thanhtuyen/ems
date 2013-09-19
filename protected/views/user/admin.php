@@ -32,76 +32,29 @@ $('.search-form form').submit(function(){
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
 	'roles' => $roles
-)); ?>
-</div><!-- search-form -->
+)); 
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'user-grid',
-	'dataProvider'=>$model->search(),
-	//'filter'=>$model,
-	'columns'=>array(
-		array(
-                'name' => 'id',
-                'htmlOptions'=>array('align'=>'center'),
-                ),
-		array(
-                'name' => 'fullname',
-				'value' => '$data->fullname',
-                'htmlOptions'=>array('align'=>'center'),
-                ),
-		array(
-                'name' => 'email',
-                'htmlOptions'=>array('align'=>'center'),
-                ),
-		array('name'=>'dob',
-                  'value'=>'date("M-d-Y","$data->dob")',	
-				  'htmlOptions'=>array('align'=>'center'),  	     
-			),
-		array('name'=>'created_date',
-                  'value'=>'date("M-d-Y","$data->created_date")',	
-				  'htmlOptions'=>array('align'=>'center'),  	     
-			),
-		array('name' => 'roles',
-				  'value' => '($data->getUserRole($data->id))?$data->getUserRole($data->id): "-"',
-				  'filter' => false,
-				  'htmlOptions'=>array('align'=>'center'),
-				
-			),
-		/*
-		'password',
-		'activkey',
-		'status',
-		'lastvisit',
-		'created_date',
-		'type',
-		'updated_date',
-		'roles',
-		*/
-		array(
-					'class'=>'CButtonColumn',
-					'template'=>'{deactive} {change_pass} {update} {view}',
-					'header'=>'Actions',
-					'buttons'=>array(
-									'deactive' => array(									
-										'label'=>'Deactive',
-										'imageUrl'=>Yii::app()->request->baseUrl.'/images/delete.png',
-										'url'=>'Yii::app()->createUrl("user/deactive",array("id"=>$data->id))',
-									),
-									'change_pass' => array(
-												'label'=>'Change password',
-												'url'=>'Yii::app()->createUrl("user/changePassword",array("id"=>$data->id))',
-												'imageUrl'=>Yii::app()->request->baseUrl.'/images/change_password.png',
-				                    ),
-									'update' => array(    									   
-										'imageUrl'=>Yii::app()->request->baseUrl.'/images/ico_edit.png',
-			                            'url'=>'Yii::app()->createUrl("user/update",array("id"=>$data->id))',
-									), 
-			                        'view' => array(
-			                            'imageUrl'=>Yii::app()->request->baseUrl.'/images/view.png',
-			                            'url'=>'Yii::app()->createUrl("user/view",array("id"=>$data->id))',
-			                        ),
-	                ),
-					'htmlOptions'=>array('width'=>100,'align'=>'center'),
-	         ),
-	),
-)); ?>
+	$modelDeactive=new CActiveDataProvider('User', array(
+	            'criteria'=>array(
+	                'condition'=>'status=2',
+	                'order'=>'id ASC',
+	            ),
+	        ));
+?>
+</div><!-- search-form -->
+<?php $this->widget('bootstrap.widgets.TbTabs', array(
+    'id' => 'mytabs',
+    'type' => 'tabs',
+    'tabs' => array(
+      array('id' => 'tab1', 'label' => 'Active', 'content' => $this->renderPartial('listActive', array('model' => $model), true), 'active' => true),
+      array('id' => 'tab2', 'label' => 'Deactive', 'content' =>$this->renderPartial('listDeactive', array('modelDeactive' => $modelDeactive), true)),
+      array('id' => 'tab6', 'label' => 'New User', 'url' => '../User/create', true),
+    ),
+    'events'=>array('shown'=>'js:loadContent')
+  )
+);?>
+
+
+
+
+

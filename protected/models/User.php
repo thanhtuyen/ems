@@ -123,27 +123,13 @@ class User extends CActiveRecord
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
-
+        $status = 1;
 		$criteria=new CDbCriteria;
-
-		// $criteria->compare('id',$this->id,true);
-		// $criteria->compare('firstname',$this->firstname,true);
-		// $criteria->compare('lastname',$this->lastname,true);
-		// $criteria->compare('fullname',$this->fullname,true);
-		// $criteria->compare('email',$this->email,true);
-		// $criteria->compare('dob',$this->dob);
-		// $criteria->compare('password',$this->password,true);
-		// $criteria->compare('activkey',$this->activkey,true);
-		// $criteria->compare('status',$this->status,true);
-		// $criteria->compare('lastvisit',$this->lastvisit);
-		// $criteria->compare('created_date',$this->created_date);
-		// $criteria->compare('type',$this->type,true);
-		// $criteria->compare('updated_date',$this->updated_date);
-		// $criteria->compare('roles',$this->roles);
-
         $criteria->compare('fullname',$this->fullname,true);
         $criteria->compare('email',$this->email,true);
         $criteria->compare('roles',$this->roles, true);
+        $criteria->condition = 'status=:status';
+        $criteria->params = array(':status'=>$status);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

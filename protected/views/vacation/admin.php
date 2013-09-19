@@ -59,7 +59,6 @@ $('.search-form form').submit(function(){
 	            ),
 	        ));
 
-	$newVacation =new Vacation;
 ?>
 
 
@@ -79,7 +78,7 @@ $('.search-form form').submit(function(){
       array('id' =>  'tab3', 'label' => 'Request Cancel', 'content' =>$this->renderPartial('listRequestCancel', array('modelCancel' => $modelCancel), true)),
       array('id' => 'tab4', 'label' => 'Accepted', 'content' => $this->renderPartial('listAccepted', array('modelAccepted' => $modelAccepted), true)),
       array('id' => 'tab5', 'label' => 'Decline', 'content' => $this->renderPartial('listDecline', array('modelDecline' => $modelDecline), true)),
-      //array('id' => 'tab6', 'label' => 'New Vacation', 'content' => $this->renderPartial('create', array('model' => $newVacation), true)),
+      array('id' => 'tab6', 'label' => 'New Vacation', 'url' => '../Vacation/create', true),
     ),
     'events'=>array('shown'=>'js:loadContent')
   )

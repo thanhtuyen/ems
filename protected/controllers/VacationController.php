@@ -28,10 +28,10 @@ class VacationController extends Controller
 	{
 		if( Yii::app()->user->getState('roles') =="admin") {
 	    
-	         $arr =array('index','create', 'update', 'view', 'admin', 'total', 'withdraw');   /* give all access to admin */
+	         $arr =array('index','create', 'update', 'view', 'admin', 'total', 'withdraw', 'accepted');   /* give all access to admin */
 	    } elseif( Yii::app()->user->getState('roles') =="manager") {
 	      	
-	      	 $arr =array('index','create', 'update', 'view', 'admin', 'total', 'withdraw');   /* give all access to manager*/
+	      	 $arr =array('index','create', 'update', 'view', 'admin', 'total', 'withdraw', 'accepted');   /* give all access to manager*/
 	    } elseif( Yii::app()->user->getState('roles') =="leader") {
 	      	
 	        $arr =array('index','create', 'update', 'view', 'admin', 'total', 'withdraw');   /* give all access to leader*/
@@ -325,6 +325,41 @@ class VacationController extends Controller
 		}
 
 		$this->render('withdraw',array(
+			'model'=>$model,
+		));
+	}
+
+	public function actionAccepted($id) 
+	{
+		$model=$this->loadmodel($id);
+		
+		if(isset($_POST['Vacation']))
+		{
+			$model->comment_two=$_POST['Vacation']['comment_one'];
+			$model->setStatus(4);	//	withdraw
+			if($model->save())
+			{
+				$logs = new ActivityLog;
+				if(isset($logs))
+				{
+					$logs->activity_date = time();
+					$logs->user_id = Yii::app()->user->id;
+					$logs->action_id = $id;						// 	Vacation ID
+					$logs->action_group = 'vacation';			// 	Vacation Group
+					$logs->activity_type = 19;					// 	Withdraw Vacation
+					$logs->save();
+				}				
+				
+				$this->redirect(array('view','id'=>$model->id));
+			}
+			else
+			{ 
+				throw new CHttpException(403,'Error while accepted vacation');
+			}
+			
+		}
+
+		$this->render('accepted',array(
 			'model'=>$model,
 		));
 	}
