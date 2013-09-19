@@ -99,6 +99,7 @@ class EmployeeController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
+		Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/vacation.css');
 		if($id === app()->user->id) {
 			throw new CHttpException(404,'You are not authorized to update This profile info !');
 		}
