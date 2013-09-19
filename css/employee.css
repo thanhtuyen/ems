@@ -77,3 +77,9 @@
 .employee_right{
   float: right;
 }
+.employee_avatar_update {
+position:absolute;
+left:700px;
+top:150px;
+}
+}

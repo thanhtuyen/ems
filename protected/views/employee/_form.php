@@ -12,6 +12,27 @@
 	'enableAjaxValidation'=>true,
   'htmlOptions' => array('enctype' => 'multipart/form-data'),
 )); ?>
+	<div class="employee_avatar_update">
+		<span class="img_avatar">
+			<?php 
+			if($model->avatar) {
+				$imagestring = Yii::app()->request->baseUrl.'/media/images/thumbnails/'.$model->avatar;
+			} else {
+				$imagestring = Yii::app()->request->baseUrl.'/media/images/thumbnails/noAvatar.png';
+			}
+			echo CHtml::image($imagestring);
+
+			if($model->cv) {
+				$cv = Yii::app()->request->baseUrl.'/media/cv/has_cv.png';
+			} else {
+				$cv = Yii::app()->request->baseUrl.'/media/cv/no_cv.png';
+			}
+			echo CHtml::image($cv);
+	
+			?>
+		</span>
+	</div>
+
 
 <p class="help-block">Fields with <span class="required">*</span> are required.</p>
 	<div class="space5">
