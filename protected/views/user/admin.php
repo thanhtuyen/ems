@@ -18,9 +18,19 @@ $('.search-button').click(function(){
 	return false;
 });
 $('.search-form form').submit(function(){
-	$('#user-grid').yiiGridView('update', {
-		data: $(this).serialize()
-	});
+
+    $('#user-grid').yiiGridView('update', {
+        data: $(this).serialize()
+    });
+    name = $('#user-grid2').attr('value');
+    if (name) {
+
+         $('#user-grid2').yiiGridView('update', {
+            data: $(this).serialize()
+	    });
+    }
+
+
 	return false;
 });
 ");
@@ -32,6 +42,7 @@ $('.search-form form').submit(function(){
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
 	'roles' => $roles
+
 )); 
 
 	$modelDeactive=new CActiveDataProvider('User', array(
@@ -47,7 +58,7 @@ $('.search-form form').submit(function(){
     'type' => 'tabs',
     'tabs' => array(
       array('id' => 'tab1', 'label' => 'Active', 'content' => $this->renderPartial('listActive', array('model' => $model), true), 'active' => true),
-      array('id' => 'tab2', 'label' => 'Deactive', 'content' =>$this->renderPartial('listDeactive', array('modelDeactive' => $modelDeactive), true)),
+      array('id' => 'tab2', 'label' => 'Deactive', 'content' =>$this->renderPartial('listDeactive', array('model' => $model), true)),
       array('id' => 'tab6', 'label' => 'New User', 'url' => '../User/create', true),
     ),
     'events'=>array('shown'=>'js:loadContent')

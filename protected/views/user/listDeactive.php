@@ -1,6 +1,6 @@
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'user-grid',
-	'dataProvider'=>$modelDeactive,
+	'id'=>'user-grid2',
+	'dataProvider'=>$model->search1(),
 	//'filter'=>$model,
 	'columns'=>array(
 		array(

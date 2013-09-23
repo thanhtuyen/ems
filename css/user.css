@@ -21,7 +21,9 @@
 .form-actions {
   background-color: #ffffff !important;
   border-top-style: none !important;
-  padding-top: 0px;
+  padding-top: 0px !important;
+  margin-top: 0px !important;
+  margin-left: 10px;
 
 }
 .form-horizontal .form-actions {
@@ -40,7 +42,7 @@ padding-left: 100px;
 }
 .create_user {
   width: 70%;
-  margin-left: 50px !important;
+  margin-left: 150px !important;
   margin-right: 20px !important;
   border:1px solid #999999;
   border-radius:15px;
@@ -71,7 +73,7 @@ margin-bottom: 0px !important;
   width: 100%;
 }
 .search-form  {
-  margin-left: 50px !important;
+  margin-left: 200px !important;
   margin-right: 20px !important;
   border:1px solid #999999;
   border-radius:15px;

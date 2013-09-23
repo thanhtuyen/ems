@@ -85,30 +85,6 @@ $this->breadcrumbs=array(
 
 	</br>
 	</div>
-	<div class="form-actions">
-		
-      <?php $this->widget('bootstrap.widgets.TbButton', array(
-        'buttonType'=>'link',
-        'type'=>'primary',
-        'label'=>$model->id ? 'Update' : 'Edit',
-        'url'=>'../Employee/Update/'.$model->id,
-        'htmlOptions'=>array('style'=>'margin-left: 70px; bac '),
-      ));
-      if($model->isNewRecord){
-        $this->widget('bootstrap.widgets.TbButton', array(
-          'buttonType'=>'reset',
-          'htmlOptions'=>array('style'=>'margin-left: 10px;'),
-          'label'=>'Reset',
-        ));
-      } else {
-        $this->widget('bootstrap.widgets.TbButton', array(
-          //'buttonType'=>'link',
-          'label'=>'Cancel',
-          'htmlOptions'=>array('style'=>'margin-left: 10px;'),
-          'url'=>'../../Employee/Admin',
-        ));
-      }
-      ?>
-    </div>
+
 	
 </div>

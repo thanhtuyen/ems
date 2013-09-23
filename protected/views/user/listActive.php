@@ -30,16 +30,7 @@
 				  'htmlOptions'=>array('align'=>'center'),
 				
 			),
-		/*
-		'password',
-		'activkey',
-		'status',
-		'lastvisit',
-		'created_date',
-		'type',
-		'updated_date',
-		'roles',
-		*/
+
 		array(
 					'class'=>'CButtonColumn',
 					'template'=>'{deactive} {change_pass} {update} {view}',

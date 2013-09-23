@@ -84,7 +84,7 @@
     	</div>
     <?php endif; ?>
   	</div>
-  </br>
+
 	<div class="form-actions">
     	<?php $this->widget('bootstrap.widgets.TbButton', array(
     	'buttonType'=>'submit',

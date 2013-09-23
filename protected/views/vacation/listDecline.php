@@ -1,5 +1,5 @@
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'vacation-grid',
+	'id'=>'vacation-grid4',
 	'dataProvider'=>$modelDecline,
 	//'filter'=>$model,
 	'columns'=>array(

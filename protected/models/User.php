@@ -123,17 +123,33 @@ class User extends CActiveRecord
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
-        $status = 1;
+        //$status = 1;
 		$criteria=new CDbCriteria;
         $criteria->compare('fullname',$this->fullname,true);
         $criteria->compare('email',$this->email,true);
         $criteria->compare('roles',$this->roles, true);
-        $criteria->condition = 'status=:status';
-        $criteria->params = array(':status'=>$status);
+        //$criteria->condition = 'status=:status';
+        //$criteria->condition = 'status=1';
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+
+    public function search1()
+    {
+        // Warning: Please modify the following code to remove attributes that
+        // should not be searched.
+        //$status = 2;
+        $criteria=new CDbCriteria;
+        $criteria->compare('fullname',$this->fullname,true);
+        $criteria->compare('email',$this->email,true);
+        $criteria->compare('roles',$this->roles, true);
+        //$criteria->condition = 'status=:status';
+        //$criteria->params = array(':status'=>$status);
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
     // public function beforeValidate()
     // {
     //     $c_year = date("Y")-18;                              
