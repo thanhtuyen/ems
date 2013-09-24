@@ -69,7 +69,7 @@
             'items'=>array(
                 //array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>webapp()->user->isGuest),
                 array('label'=>'Welcome  '.app()->user->getState('fullName').' ['.app()->user->getState('roles').']', 'url'=>'#', 'items'=>array(
-                    array('label'=>'My Accounting', 'url'=>array('/User/view/'.app()->user->id)),
+                    array('label'=>'My Account', 'url'=>array('/User/view/'.app()->user->id)),
                     array('label'=>'Change Password', 'url'=>array('/User/Changepassword/'.app()->user->id)),
                     array('label'=>'Logout', 'url'=>array('/Site/Logout'), 'visible'=>!app()->user->isGuest)
                 )),
