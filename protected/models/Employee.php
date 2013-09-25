@@ -65,11 +65,16 @@ class Employee extends CActiveRecord
     const Project_Manager = 'Project Manager';
     const Operation_Manager = 'Operation Manager';
     const Managing_Director = 'Managing Director';
-
+    const Marketing = 'Marketing';
 
     const S_THUMBNAIL = '/media/images/thumbnails/';
     const S_IMAGES      = '/media/images/';
     const S_CVS   = '/media/cv/';
+
+    const Bussiness = 1;
+    const Programming = 2;
+    const Sotfware = 3;
+    const HR       = 4;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -315,5 +320,64 @@ class Employee extends CActiveRecord
     }
     public function getDepartment(){
         return $this->department;
+    }
+
+    /**
+     * get Job title options
+     * return List Job title
+     */
+    public function getDepartmentList($departmentId = '') {
+      switch($departmentId){
+        case $departmentId == self::Bussiness:
+          return array(
+            self::Business_Analyst => 'Business Analyst',
+            self::Marketing => 'Marketing',
+          );
+          break;
+        case $departmentId == self::Programming:
+          return array(
+            self::Jr_Developer => 'Jr Developer',
+            self::Developer_I => 'Developer I',
+            self::Developer_II => 'Developer II',
+            self::Developer_III => 'Developer III',
+            self::Senior_Developer => 'Senior Developer',
+            self::Jr_Designer => 'Jr Designer',
+            self::Designer => 'Designer',
+            self::Senior_Designer => 'Senior Designer',
+
+
+              );
+          break;
+        case $departmentId == self::Sotfware:
+          return array(
+            self::Jr_Tester => 'Jr Tester',
+            self::Test_Engineer_I => 'Test Engineer I',
+            self::Test_Engineer_II => 'Test Engineer II',
+            self::Test_Engineer_III => 'Test Engineer III',
+            self::Senior_Test_Engineer => 'Senior Test Engineer',
+          );
+          break;
+        case $departmentId == self::HR;
+          return array(
+            self::HR_Executive => 'HR Executive',
+            self::Receptionist => 'Receptionist',
+            self::Accountant_Manager => 'Accountant Manager',
+            self::Accountant => 'Accountant',
+            self::Chief_Accountant => 'Chief Accountant ',
+            self::Project_Manager => 'Project Manager',
+            self::Operation_Manager => 'Operation Manager',
+            self::Managing_Director => 'Managing Director',
+          );
+          break;
+          default :
+            return array(
+              self::HR_Executive => 'HR Executive',
+              self::Jr_Developer => 'Jr Developer',
+              self::Developer_I => 'Developer I',
+              self::Developer_II => 'Developer II',
+              self::Developer_III => 'Developer III',
+            );
+          break;
+      }
     }
 }

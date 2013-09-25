@@ -1,3 +1,9 @@
+<style type="text/css">
+  A:link {text-decoration: none}
+  A:visited {text-decoration: none}
+  A:active {text-decoration: none}
+  A:hover {text-decoration: none;}
+</style>
 <?php
 /* @var $this UserController */
 /* @var $model User */
@@ -43,42 +49,43 @@ $this->breadcrumbs=array(
     ?>
   </p>
   	<div class = "view_user">
-  	<h1><?php echo $model->fullname; ?></h1>
-	<?php $this->widget('bootstrap.widgets.TbDetailView',array(
-  		'data'=>$model,
-  		'attributes'=>array(
-    	'firstname',
-    	'lastname',
-      	'fullname',
+      <button style="float: right; margin-right: 5px;""><a onclick="history.go(-1);">Cancel</a></button>
+      <button style="float: right; margin-right: 5px;"><a href="<?php print Yii::app()->createUrl('/user/update', array('id'=>$model->id));?>">Update User</a></button>
+
+      <h3 class="title" ><?php echo $model->fullname; ?></h3>
+
+      <?php $this->widget('bootstrap.widgets.TbDetailView',array(
+        'data'=>$model,
+        'attributes'=>array(
+        'firstname',
+        'lastname',
+          'fullname',
       	'email',
         'dob',
       	'lastvisit',
       	'created_date',
-      	'updated_date',
+         array('name' => 'updated_date',
+               'value' => $model->updated_date? date('M-d-Y',$model->updated_date):''),
+
     	),
   		)); ?>
-	    <div class="form-actions">
-	      <?php $this->widget('bootstrap.widgets.TbButton', array(
-	        'buttonType'=>'link',
-	        'type'=>'primary',
-	        'label'=>$model->id ? 'Update' : 'Edit',
-	        'url'=>'../User/Update/'.$model->id,
-	        'htmlOptions'=>array('style'=>'margin-left: 70px; bac '),
-	      ));
-	      if($model->isNewRecord){
-	        $this->widget('bootstrap.widgets.TbButton', array(
-	          'buttonType'=>'reset',
-	          'htmlOptions'=>array('style'=>'margin-left: 10px;'),
-	          'label'=>'Reset',
-	        ));
-	      } else {
-	        $this->widget('bootstrap.widgets.TbButton', array(
-	          //'buttonType'=>'link',
-	          'label'=>'Cancel',
-	          'htmlOptions'=>array('style'=>'margin-left: 10px;'),
-	          'url'=>'../../User/Admin',
-	        ));
-	      }
-	      ?>
-	    </div>
-	</div>
+	    </br>
+      <?php
+      if($model->status == 1) {
+        $this->widget('bootstrap.widgets.TbButton',array(
+          'label' => 'Deactive User',
+          //'type' => 'danger',
+          'size' => 'small',
+          'url'  => array('user/deactive','id'=>$model->id),
+        ));
+      } else {
+        $this->widget('bootstrap.widgets.TbButton',array(
+          'label' => 'Active User',
+          //'type' => 'danger',
+          'size' => 'small',
+          'url'  => array('user/active','id'=>$model->id),
+        ));
+      }
+
+      ?>
+	  </div>

@@ -30,7 +30,7 @@ class User extends CActiveRecord
     const ADMIN = 1;
     const MANAGER = 2;
     const LEADER = 3;
-    const USER = 0;
+    const USER = 4;
 
     public $password_repeat;
     public $old_password;
@@ -63,13 +63,14 @@ class User extends CActiveRecord
 			array('firstname, lastname, fullname, email, dob, password, roles', 'required'),
 			array('dob, lastvisit, created_date, updated_date, roles', 'numerical', 'integerOnly'=>true),
 			array('firstname, lastname, fullname, email', 'length', 'max'=>255),
-            array('email', 'unique', 'on' => 'create'),
-            array('email', 'email'),
+      array('email', 'unique', 'message' => '{attribute}:{value} already exists.', 'on' => 'create'),
+      array('email', 'email'),
 			array('password, activkey', 'length', 'max'=>500),
 			array('status', 'length', 'max'=>1),
 			array('type', 'length', 'max'=>11),
-            array('password', 'match', 'pattern' => '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,16}$/', 'message' => 'Passwords are 6-16 characters with uppercase letters, lowercase letters and at least one number.', 'on' => 'create, changePassword'),
-            array('password_repeat', 'compare', 'compareAttribute' => 'password', 'on' => 'create'),
+      array('password', 'match', 'pattern' => '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,16}$/',
+        'message' => 'Passwords are 6-16 characters with uppercase letters, lowercase letters and at least one number.', 'on' => 'changePassword'),
+      //array('password_repeat', 'compare', 'compareAttribute' => 'password', 'on' => 'create'),
              // array('dob','compare','compareAttribute'=>'working_age','operator'=>'<=', 
              //  'allowEmpty'=>false , 'message'=>'you are not in working age allowed','on'=>'create,update'),
 			// The following rule is used by search().
@@ -123,13 +124,13 @@ class User extends CActiveRecord
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
-        //$status = 1;
-		$criteria=new CDbCriteria;
-        $criteria->compare('fullname',$this->fullname,true);
-        $criteria->compare('email',$this->email,true);
-        $criteria->compare('roles',$this->roles, true);
-        //$criteria->condition = 'status=:status';
-        //$criteria->condition = 'status=1';
+    $role = $this->getRole();
+		$criteria = new CDbCriteria;
+    $criteria->compare('fullname',$this->fullname,true);
+    $criteria->compare('email',$this->email,true);
+    $criteria->compare('roles',$this->roles, true);
+    $criteria->addCondition("status = 1");
+    $criteria->addCondition("roles > ".$role);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
@@ -139,13 +140,13 @@ class User extends CActiveRecord
     {
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
-        //$status = 2;
+        $role = $this->getRole();
         $criteria=new CDbCriteria;
         $criteria->compare('fullname',$this->fullname,true);
         $criteria->compare('email',$this->email,true);
         $criteria->compare('roles',$this->roles, true);
-        //$criteria->condition = 'status=:status';
-        //$criteria->params = array(':status'=>$status);
+        $criteria->addCondition("status = 2");
+        $criteria->addCondition("roles > ".$role);
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));
@@ -168,6 +169,7 @@ class User extends CActiveRecord
         if (in_array($this->getScenario(), array('create', 'changePassword', 'resetPassword'))) {
             $this->password = $this->encrypt($this->password);
         }
+
     }
 	
     /**
@@ -282,4 +284,10 @@ class User extends CActiveRecord
       return $fullName;
     }
 
+    public function getRole() {
+      $id = Yii::app()->user->id;
+      $user = User::model()->findByPk($id);
+
+      return $user->roles;
+    }
 }

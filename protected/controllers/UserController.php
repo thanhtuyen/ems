@@ -29,24 +29,24 @@ class UserController extends Controller
 		
 		if( Yii::app()->user->getState('roles') =="admin") {
 	    
-	         $arr =array('index','create', 'update', 'view', 'admin', 'changePassword', 'forgotPassword', 'deactive');   /* give all access to admin */
-	    } elseif( Yii::app()->user->getState('roles') =="manager") {
+      $arr =array('index','create', 'update', 'view', 'admin', 'changePassword', 'forgotPassword', 'deactive', 'Department');   /* give all access to admin */
+    } elseif( Yii::app()->user->getState('roles') =="manager") {
 	      	
-	      	 $arr =array('index','create', 'update', 'view', 'admin', 'changePassword', 'forgotPassword');   /* give all access to manager*/
-	    } elseif( Yii::app()->user->getState('roles') =="leader") {
+       $arr =array('index','create', 'update', 'view', 'admin', 'changePassword', 'forgotPassword', 'Department');   /* give all access to manager*/
+    } elseif( Yii::app()->user->getState('roles') =="leader") {
 	      	
-	        $arr =array('index','create', 'update', 'view', 'admin', 'changePassword', 'forgotPassword');   /* give all access to leader*/
-	    } else {
+      $arr =array('index','create', 'update', 'view', 'admin', 'changePassword', 'forgotPassword', 'Department');   /* give all access to leader*/
+    } else {
 
-	        $arr = array('view', 'changePassword', 'forgotPassword');    /*  no access to other user */
-	    }
+      $arr = array('view', 'changePassword', 'forgotPassword');    /*  no access to other user */
+    }
 
-        return array(array('allow',
-                    'actions'=>$arr,
-                    'users'=>array('@'),),
-             array('deny',
-                   'users'=>array('*'),),
-            );
+    return array(array('allow',
+            'actions'=>$arr,
+            'users'=>array('@'),),
+            array('deny',
+               'users'=>array('*'),),
+    );
 
         // return array(
         //     array('allow',  // allow all users to perform 'index' and 'view' actions
@@ -87,19 +87,16 @@ class UserController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$model = $this->loadModel($id);
-		$dob = get_date($model->dob, null);
-	    $lastVisit = get_date($model->lastvisit, null);
-	    $createdDate = get_date($model->created_date, null);
-	    if($model->updated_date) {
-	    	$updatedDate = get_date($model->updated_date, null);
-	    }
-	    $updatedDate = null;
-	    
-	    $model->setAttribute('dob', $dob);
-	    $model->setAttribute('lastvisit', $lastVisit);
-	    $model->setAttribute('created_date', $createdDate);
-	    $model->setAttribute('updated_date', $updatedDate);
+    $model = $this->loadModel($id);
+    if(User::model()->getRole() > $model->roles) {
+      throw new CHttpException(404,'You are not authorized to update This profile info !');
+    } elseif (User::model()->getRole() ==  $model->roles && app()->user->id != $id) {
+      throw new CHttpException(404,'You are not authorized to update This profile info !');
+    }
+    $lastVisit = get_date($model->lastvisit, null);
+    $createdDate = get_date($model->created_date, null);
+    $model->setAttribute('lastvisit', $lastVisit);
+    $model->setAttribute('created_date', $createdDate);
 		$this->render('view',array(
 			'model'=>$model,
 		));
@@ -114,65 +111,85 @@ class UserController extends Controller
 		$model=new User;
 		$employeemodel=new Employee('create');
 		$roles = $model->getRoleOptions();
+    $idLogin = app()->user->id;
+    if($model->getUserRole($idLogin) == 'admin' ){
+      unset($roles[USER::ADMIN]);
+    }
+    elseif($model->getUserRole($idLogin) == 'manager' ){
+      unset($roles[USER::ADMIN]);
+      unset($roles[USER::MANAGER]);
+    }
+    elseif($model->getUserRole($idLogin) == 'leader'){
+      unset($roles[USER::ADMIN]);
+      unset($roles[USER::MANAGER]);
+      unset($roles[USER::LEADER]);
+    }
 		$employeemodel->getDepartmentOption();
 		$pass = $model->autoGeneralPass();
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model, $employeemodel);
-
 		if(isset($_POST['User']))
 		{
+      $model->setScenario('create');
 			$model->attributes = Clean($_POST['User']);
-        	$model->email = textlower($_POST['User']['email']);
+      $model->email = textlower($_POST['User']['email']);
 			$model->password = encrypt($pass);
 			$model->dob = $model->setUserDob($_POST['User']['dob']);
 			$model->activkey = encrypt(microtime().$model->password);
 			$model->created_date = gettime();
 			// validate BOTH $model and $employeemodel
-
-    		$model->validate();
-        	$employeemodel->validate();
-
+      $model->validate();
+      $employeemodel->validate();
         	// End validate
-			
 			if($model->save()) {
-
 				$logs = new ActivityLog;
-		        if(isset($logs)) {
-			        
-			            $logs->activity_date = time();
-			            $logs->user_id = Yii::app()->user->id;
-						$logs->action_id = Yii::app()->user->id;	// 	User ID
-						$logs->action_group = 'user';				// 	User Group
-						$logs->activity_type = 5;					//	Create 
-						$logs->ip_logged = Yii::app()->request->userHostAddress;
-			            $logs->save();
-			           
-		        }
+          if(isset($logs)) {
+            $logs->activity_date = time();
+            $logs->user_id = Yii::app()->user->id;
+            $logs->action_id = Yii::app()->user->id;	// 	User ID
+            $logs->action_group = 'user';				// 	User Group
+            $logs->activity_type = 5;					//	Create
+            $logs->ip_logged = Yii::app()->request->userHostAddress;
+            $logs->save();
+          }
 				$employeemodel->attributes = Clean($_POST['Employee']);
 				$employeemodel->id = $model->id;
 				$employeemodel->created_date =  gettime();
-          		if(isset($_POST['Employee']['department_id'])) {
-          			$employeemodel->setDepartment($_POST['Employee']['department_id']);
-            	}		
+          if(isset($_POST['Employee']['department_id'])) {
+            $employeemodel->setDepartment($_POST['Employee']['department_id']);
+          }
 				if($employeemodel->save()) {
-					 $activation_url = $this->createAbsoluteUrl('/activation/Index',array("activkey" => $model->activkey, "email" => $model->email));
-		            MailTransport::sendMail(
-		              app()->params['noreplyEmail'],
-		              $model->email,
-		              'Welcome to EMS',
-		              CController::renderPartial('emailwelcome',array('activation_url'=>$activation_url,'email'=>$model->email,'password'=>$pass),true,false)
-		            );
+          $activation_url = $this->createAbsoluteUrl('/activation/Index',array("activkey" => $model->activkey, "email" => $model->email));
+            MailTransport::sendMail(
+              app()->params['noreplyEmail'],
+              $model->email,
+              'Welcome to EMS',
+              CController::renderPartial('emailwelcome',array('activation_url'=>$activation_url,'email'=>$model->email,'password'=>$pass),true,false)
+            );
 		            
-            		app()->user->setFlash('success', 'You create a new user successful !');
+              app()->user->setFlash('success', 'You create a new user successful !');
 					$this->redirect(array('view','id'=>$model->id));
 				}
 			}
-				
 		}
 
-		$this->render('create',array(
-			'model'=>$model, 'employeemodel' => $employeemodel, 'roles' => $roles));
+		$this->render('create',array(	'model'=>$model, 'employeemodel' => $employeemodel, 'roles' => $roles));
 	}
+
+    public function actionDepartment()
+    {
+        if(isset($_POST['Employee']['department_id'])){
+            $departmentId = $_POST['Employee']['department_id'];
+        }
+        if ($departmentId == 0)
+            return array();
+
+        $data = Employee::model()->getDepartmentList($departmentId);
+        foreach ($data as $value => $name) {
+            echo CHtml::tag('option',
+                array('value' => $value), CHtml::encode($name), true);
+        }
+    }
 
 	/**
 	 * Updates a particular model.
@@ -182,6 +199,11 @@ class UserController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+    if(User::model()->getRole() > $model->roles) {
+      throw new CHttpException(404,'You are not authorized to update This profile info !');
+    } elseif (User::model()->getRole() ==  $model->roles && app()->user->id != $id) {
+      throw new CHttpException(404,'You are not authorized to update This profile info !');
+    }
 		$roles = $model->getRoleOptions();
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -189,7 +211,7 @@ class UserController extends Controller
 		if(isset($_POST['User']))
 		{
 			$model->attributes = Clean($_POST['User']);
-        	$model->email = textlower($_POST['User']['email']);
+      $model->email = textlower($_POST['User']['email']);
 			$model->dob = $model->setUserDob($_POST['User']['dob']);
 			$model->updated_date = gettime();
 			if($model->save()) {
@@ -295,10 +317,7 @@ class UserController extends Controller
 		$password = $model->password;
 		// Uncomment the following line if AJAX validation is needed
 		//$this->performAjaxValidation($model);
-        /*print_r($_POST['User']);echo '</br>';
-        print_r($password);echo '</br>';
-        print_r($_POST['User']['user_old_password']);echo '</br>';
-        exit;*/
+
 		if(isset($_POST['User']))
 		{
 			
@@ -310,9 +329,10 @@ class UserController extends Controller
 			{
 				$model->setScenario('changePassword');
 				$model->password = $_POST['User']['password'];
-				
-				if($model->save()) {
-				
+
+        if($model->validate()) {
+
+          if($model->save()) {
 					$logs = new ActivityLog;
 					if(isset($logs))
 					{
@@ -321,21 +341,16 @@ class UserController extends Controller
 						$logs->action_id = $id;						// 	User ID
 						$logs->action_group = 'user';				// 	User Group
 						$logs->activity_type = 11;					// 	Change Password
-						$logs->ip_logged = Yii::app()->request->userHostAddress;	
+						$logs->ip_logged = Yii::app()->request->userHostAddress;
 						$logs->save();
 					}
-					
-					//send change password email to user
-					Yii::app()->user->setFlash('changedPassword', "Your password is changed." ); 
-					//$this->sendResetPasswordEmail($model->getFullName(), $model->user_email, $_POST['User']['user_password']);
-					// if(Yii::app()->user->checkAccess('admin')||Yii::app()->user->checkAccess('manager'))
-					$this->redirect(array('view','id'=>$model->id));		
-				}
-				/*else {
-					print_r($model->getErrors());exit;
-				}*/
+            //send change password email to user
+            Yii::app()->user->setFlash('changedPassword', "Your password is changed." );
+            $this->redirect(array('view','id'=>$model->id));
+          }
+        }
+
 			}
-			
 		}
 				
 		$this->render('changePassword',array(

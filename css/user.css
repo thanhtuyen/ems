@@ -124,3 +124,40 @@ margin-bottom: 0px !important;
   width:80%;
   margin-left: 50px;
 }
+.title{
+  margin-top: 2px;
+  background-color: #E3E3E3;
+  border-radius: 15px;
+}
+.error{
+  color: red;
+}
+.errorMessage {
+  color: red;
+}
+.warn_info {
+  background-color:orange !important;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  border-radius:10px;
+  color:#333333;
+  margin:15px 0;
+  padding:4px;
+  text-align:center;
+  text-decoration:blink;
+  font-size: 16px;
+  height: 35px;
+}
+.yes_info {
+  background-color:#5eb95e !important;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  border-radius:10px;
+  color:#333333;
+  margin:15px 0;
+  padding:4px;
+  text-align:center;
+  text-decoration:blink;
+  font-size: 16px;
+  height: 35px;
+}
